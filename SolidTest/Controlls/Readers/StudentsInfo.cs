@@ -20,7 +20,7 @@ namespace SolidTest.Controlls.Reporter
 
                 foreach (var mark in student.Marks)
                 {
-                    stringBuilder.Append($"{mark.Key} {mark.Value}\n");
+                    stringBuilder.Append($"{mark.Key.NameOfSubject} {mark.Value}\n");
                 }
             }
             return stringBuilder.ToString();        

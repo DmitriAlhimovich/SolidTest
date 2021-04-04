@@ -2,6 +2,7 @@
 using SolidTest.Controlls.Adders;
 using SolidTest.Controlls.other;
 using SolidTest.Controlls.Reporter;
+using SolidTest.Controlls.Updaters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace SolidTest.View
         private Creator Creator { get; set; }//publisher
         private Reader Reader { get; set; }
         private HelpPublisher HelpPublisher { get; set; }
+        private MarkMaker markMaker { get; set; }
 
 
         public Action<object> AddGroupSubscriber { get; set; }//subscriber  addGroup   
@@ -44,6 +46,8 @@ namespace SolidTest.View
             this.Creator.CreateTeacher("Kirill", "Machulo", 3);
             this.Creator.CreateSubjects("Math");
             this.Creator.CreateSubjects("Biology");
+
+            this.markMaker = new MarkMaker(this.MyRepository, new FinderOfStudent(), new FinderOfSubject());
         }
 
 
@@ -78,7 +82,7 @@ namespace SolidTest.View
                     case 3:
                         {
                             Console.Clear();
-                            Console.WriteLine("Empty");
+                            SubMenuRateStudents();
 
                             break;
                         }
@@ -296,6 +300,59 @@ namespace SolidTest.View
                             Console.WriteLine(this.HelpPublisher.Subscribe(TypeOfEvent.addSubject, this.AddTeacherSubscriber, "Оповещение о создании предмета"));
                             break;
                         }
+
+                    case 22:
+                        {
+                            return;
+                        }
+
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+
+        private void SubMenuRateStudents()
+        {
+            Console.WriteLine("Подменю 'Работа со студентами'");
+
+            while (true)
+            {
+                Console.WriteLine($"\n1 - Поставить оценки\n" +
+                    $"22 -Выйти из программы");
+
+                int.TryParse(Console.ReadLine(), out int modeOfMenue);
+
+                switch (modeOfMenue)
+                {
+                    case 1:
+                        {
+                            Console.Clear();
+                            Console.WriteLine(this.Reader.ShowInfo(new StudentsInfo()));
+                            Console.WriteLine(this.Reader.ShowInfo(new SubjectInfo()));
+
+                            Console.WriteLine("Веди Id студента->");
+                            int.TryParse(Console.ReadLine(),out int studentsId);
+                            Console.WriteLine("Веди Id предмета->");
+                            int.TryParse(Console.ReadLine(), out int subjectsId);
+                            Console.WriteLine("Веди оценк->");
+                            int.TryParse(Console.ReadLine(), out int mark);
+
+                            try
+                            {
+                                this.markMaker.Rate(studentsId, subjectsId, mark);
+                            }
+                            catch (StudentException ex )
+                            {
+
+                                Console.WriteLine(ex.Message);
+                            }
+                            
+                            break;
+                        }
+                    
 
                     case 22:
                         {

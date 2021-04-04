@@ -12,7 +12,7 @@ namespace SolidTest.Controlls.Reporter
 
             foreach (var subject in repository.Subjects)
             {
-                stringBuilder.Append($"\nНазвание предмета : {subject.NameOfSubject}\n");
+                stringBuilder.Append($"\nID предмета: {subject.Id}\tНазвание предмета : {subject.NameOfSubject}\n");
 
             }
             return stringBuilder.ToString();
